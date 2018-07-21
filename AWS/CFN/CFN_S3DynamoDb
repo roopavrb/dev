@@ -1,0 +1,76 @@
+{
+   "AWSTemplateFormatVersion" : "2010-09-09",
+"Parameters" : {
+  "DynamoReadCapacity" : {
+    "Type" : "Number",
+    "Default" : "5",
+    "Description" : "Enter read capacity"
+  },
+  "DynamoTablename" : {
+    "Type" : "String",
+    "Default" : "Test",
+    "Description" : "Enter table name"
+  }
+},
+"Resources": {
+  "S3AssetsBucket1": {
+    "Type": "AWS::S3::Bucket",
+    "Properties": {
+      "BucketName": “pollywebsite",
+      "CorsConfiguration": {
+        "CorsRules": [
+          {
+            "AllowedMethods": [
+              "GET"
+            ],
+            "AllowedOrigins": [
+              "*"
+            ]
+          }
+        ]
+      }
+    }
+  },
+"S3AssetsBucket2": {
+    "Type": "AWS::S3::Bucket",
+    "Properties": {
+      "BucketName": "pollymp3",
+      "CorsConfiguration": {
+        "CorsRules": [
+          {
+            "AllowedMethods": [
+              "GET"
+            ],
+            "AllowedOrigins": [
+              "*"
+            ]
+          }
+        ]
+      }
+    }
+  },
+"myDynamoDBTable" : {
+      "Type" : "AWS::DynamoDB::Table",
+      "Properties" : {
+        "AttributeDefinitions" : [
+          {
+            "AttributeName" : "Id",
+            "AttributeType" : "S"   
+          }
+        ],
+        "KeySchema" : [
+          {
+            "AttributeName" : "Id",
+            "KeyType" : "HASH"
+          }
+        ],
+        "ProvisionedThroughput" : {
+          "ReadCapacityUnits" : {“Ref" : "DynamoReadCapacity"},
+          "WriteCapacityUnits" : "5"
+        },
+        "TableName" : {“Ref" : "DynamoTablename"}
+      }
+    }
+}
+}
+

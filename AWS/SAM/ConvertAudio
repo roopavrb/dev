@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  convertAudio:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri:
+        Bucket: lambatest
+        Key: convertoaudio.zip
+      Handler: convertAudio.lambda_handler
+      Runtime: python3.6
+      Timeout: 10
+      Role: ‘<<lamba role ARN>>’
+      Environment:
+        Variables:
+          DB_TABLE_NAME: posts
+          BUCKET_NAME: pollymp3
+      Events:
+        newposts:
+         Type: SNS
+         Properties:
+          Topic: <<Topic ARN>>
